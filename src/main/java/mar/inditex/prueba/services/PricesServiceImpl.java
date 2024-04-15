@@ -7,7 +7,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
+
 
 @Service
 public class PricesServiceImpl implements PricesService {
@@ -20,8 +22,40 @@ public class PricesServiceImpl implements PricesService {
 
     @Override
     @Transactional(readOnly =  true)
-    public List<Prices> findAll() {
-        log.info("MAR-->PricesServiceImpl ok");
+    public List<Prices> getPrecios() {
         return pricesRepository.findAll();
     }
+
+    @Override
+    @Transactional(readOnly =  true)
+    public List<Prices> findAll() {
+        return pricesRepository.findAll();
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Prices findById(Long id) {
+        return pricesRepository.findById(id).orElseThrow();
+    }
+
+
+    @Override
+    @Transactional(readOnly =  true)
+    public List<Prices> getByPriceList(Long price_list) {
+        List<Prices> lista =  pricesRepository.findByPriceList(price_list);
+        return lista  ;
+    }
+
+    @Override
+    @Transactional(readOnly =  true)
+    public List<Prices> getProducto(Date datePrice, Integer productId, Long priceList ){
+        List<Prices> lista =  pricesRepository.findByStarDateAndProductIdAndPriceList(datePrice,productId,priceList);
+        return lista;
+    }
+
+
+
+
+
+
 }
