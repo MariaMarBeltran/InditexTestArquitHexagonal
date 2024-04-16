@@ -6,13 +6,12 @@ import java.util.Date;
 import java.util.List;
 
 public interface PricesService {
-    List<Prices> findAll();
-    List<Prices> getPrecios();
-    Prices findById(Long id);
+    List<Prices> getListaPrecios();
+
+    Prices getPrecioById(Long id);
 
     List<Prices> getByPriceList(Long price_list);
-    List<Prices> getProducto(Date datePrice, Integer productId, Long priceList );
 
-
+    Prices getProducto(Date datePrice, Integer productId, Integer brandId );
 
 }

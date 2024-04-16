@@ -10,9 +10,8 @@ import java.util.List;
 
 @Repository
 public interface PricesRepository extends JpaRepository<Prices, Long> {
-   @Query(value = "select * from prices p where p.start_date >= ?1  and p.product_id = ?2 and p.price_list = ?3 ", nativeQuery = true)
-   List<Prices> findByStarDateAndProductIdAndPriceList(Date datePrice, Integer productId, Long priceList);
-
+   @Query(value = "SELECT * FROM prices p WHERE p.product_id = :productId AND p.brand_id = :brandId AND :datePrice BETWEEN p.start_date AND p.end_date ", nativeQuery = true)
+   List<Prices> findByStarDateAndProductIdAndPriceList(Date datePrice, Integer productId, Integer brandId);
 
    List<Prices> findByPriceList(Long price_list);
 

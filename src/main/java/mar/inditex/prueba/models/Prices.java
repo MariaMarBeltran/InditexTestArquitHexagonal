@@ -48,6 +48,20 @@ public class Prices {
         this.curr = curr;
     }
 
+    @Override
+    public String toString() {
+        return "Prices{" +
+                "priceList=" + priceList +
+                ", brandId=" + brandId +
+                ", startDate=" + startDate +
+                ", endDate=" + endDate +
+                ", productId=" + productId +
+                ", priority=" + priority +
+                ", price=" + price +
+                ", curr='" + curr + '\'' +
+                '}';
+    }
+
     public Prices(Long priceList) {
         this.priceList = priceList;
     }
