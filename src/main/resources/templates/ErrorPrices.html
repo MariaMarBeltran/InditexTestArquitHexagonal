@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Error en Prices</title>
+</head>
+<body>
+    <h1>Mensaje de error</h1>
+    <p><h3 th:text="${info}"></h3> </p>
+    <p><h3 th:text="${message}"></h3> </p>
+    <form th:action="@{/}">
+        <button class="btn btn-outline-success" type="submit">Volver</button>
+    </form>
+
+</body>
+</html>

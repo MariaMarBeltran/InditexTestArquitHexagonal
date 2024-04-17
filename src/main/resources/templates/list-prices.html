@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -16,6 +17,18 @@
         <a class="navbar-brand" th:href="@{/}">
             Bienvenidos a la Tienda de Zara
         </a>
+        <form th:action="@{/buscaProductoHtml}"  class="d-flex" role="search">
+            <input th:name="fechaProducto" class="form-control me-2" style="width: 20%;"
+                   type="search" aria-label="Search" autofocus="autofocus" >
+
+            <input th:name="productId" class="form-control me-2" style="width: 10%;"
+                   type="search" aria-label="Search">
+
+            <input th:name="brandId" class="form-control me-2"  style="width: 10%;"
+                   type="search" aria-label="Search">
+
+            <button class="btn btn-outline-success" type="submit">Buscar producto</button>
+        </form>
     </div>
 </nav>
 <div class="container text-center mt-4 pr-destacados">
