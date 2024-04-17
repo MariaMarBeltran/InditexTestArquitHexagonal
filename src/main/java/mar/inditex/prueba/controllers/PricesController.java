@@ -35,35 +35,33 @@ public class PricesController {
     @GetMapping("/listar")
     public ResponseEntity<List<Prices>> listar(){
         List<Prices> prices = pricesService.getListaPrecios();
-        log.info(String.format("Encontrados %d ", prices.size()));
         return new ResponseEntity <List<Prices>>(prices,HttpStatus.OK);
     }
 
     @GetMapping("/{price_list}")
-    public String detalle(@PathVariable Long price_list){
+    public ResponseEntity<Prices>  detalle(@PathVariable Long price_list){
         String mensaje;
+        Prices prices = null;
         try {
-            Prices prices = pricesService.getPrecioById(price_list);
-            mensaje = prices.toString();
+            prices = pricesService.getPrecioById(price_list);
         } catch ( MensajeErrorException m  ){
-            mensaje ="No encontrado el producto " + price_list.toString();
+            log.info("No encontrado el producto " + price_list.toString());
         }
-        return mensaje;
+        return new ResponseEntity <>(prices ,HttpStatus.OK);
     }
 
     @GetMapping("buscaId/{price_list_id}")
-    public String buscaIdentificadoTarifa2(@PathVariable("price_list_id") Long price_list_id){
-        String mensaje ="No encontrado el producto " + price_list_id.toString();
+    public ResponseEntity<List<Prices>>  buscaIdentificadoTarifa2(@PathVariable("price_list_id") Long price_list_id){
         List<Prices> prices = pricesService.getByPriceList(price_list_id);
-        if (!prices.isEmpty()){
-            mensaje = prices.get(0).toString();
+        if (prices.isEmpty()){
+            log.info("No encontrado el producto " + price_list_id.toString());
         }
-        return mensaje;
+        return new ResponseEntity <List<Prices>>(prices ,HttpStatus.OK);
     }
 
 
     @GetMapping("buscaProducto/{productId}/{brandId}/{fechaProducto}")
-    public  String buscaProducto(@PathVariable("productId") Integer productId,
+    public ResponseEntity<Prices>  buscaProducto(@PathVariable("productId") Integer productId,
                                  @PathVariable("brandId") Integer brandId,
                                  @PathVariable("fechaProducto") String fechaProducto) {
         String mensaje ="No encontrado el producto con los siguientes parámetros: "
@@ -75,15 +73,14 @@ public class PricesController {
         Date date ;
         try {
             date = dateFormat.parse(fechaProducto);
-
             Prices prices = pricesService.getProducto(date, productId, brandId);
-            if (prices != null){
-                mensaje = prices.toString();
+            if (prices == null){
+                log.info(mensaje);
             }
-            return mensaje;
+            return new ResponseEntity <>(prices ,HttpStatus.OK);
         } catch (ParseException e) {
-            mensaje = "Formato de fecha incorrecta. (yyyy-MM-dd HH.mm.ss)";
-            return mensaje;
+            log.info("Formato de fecha incorrecta. (yyyy-MM-dd HH.mm.ss)");
+            return null;
         }
 
     }
