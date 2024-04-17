@@ -4,6 +4,7 @@ package mar.inditex.prueba.services;
 import mar.inditex.prueba.exceptions.MensajeErrorException;
 import mar.inditex.prueba.models.Prices;
 
+import mar.inditex.prueba.repositories.PricesRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,6 +24,12 @@ public class PricesServiceImpl implements PricesService {
 
     public PricesServiceImpl(PricesRepository pricesRepository) {
         this.pricesRepository = pricesRepository;
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<Prices> getListaPreciosTodos() {
+        return pricesRepository.findTodos();
     }
 
     @Override

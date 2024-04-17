@@ -6,6 +6,9 @@ import java.util.Date;
 import java.util.List;
 
 public interface PricesService {
+
+    List<Prices> getListaPreciosTodos();
+
     List<Prices> getListaPrecios();
 
     Prices getPrecioById(Long id);

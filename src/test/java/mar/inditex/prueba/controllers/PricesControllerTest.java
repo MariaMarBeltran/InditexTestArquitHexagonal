@@ -1,7 +1,7 @@
 package mar.inditex.prueba.controllers;
 
 import mar.inditex.prueba.models.Prices;
-import mar.inditex.prueba.services.PricesRepository;
+import mar.inditex.prueba.repositories.PricesRepository;
 
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;

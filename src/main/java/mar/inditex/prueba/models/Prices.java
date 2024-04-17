@@ -1,7 +1,7 @@
 package mar.inditex.prueba.models;
 
+import jakarta.persistence.*;
 
-import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -35,9 +35,24 @@ public class Prices {
     @Column(name = "curr")
     private String curr;
 
-    public Prices() {   }
+    @Column(name = "imagenurl")
+    private String imagenurl;
 
-    public Prices(Long priceList, Integer brandId, Date startDate, Date endDate, Integer productId, Integer priority, BigDecimal price, String curr) {
+    @Column(name = "urltraje")
+    private String urltraje;
+
+    @Column(name = "descripcionproducto")
+    private String descripcionproducto;
+
+    @Column(name = "producto")
+    private String producto;
+
+    public Prices() {
+    }
+
+    public Prices(Long priceList, Integer brandId, Date startDate, Date endDate, Integer productId,
+                  Integer priority, BigDecimal price, String curr, String imagenurl, String urltraje,
+                  String descripcionproducto, String producto) {
         this.priceList = priceList;
         this.brandId = brandId;
         this.startDate = startDate;
@@ -46,6 +61,10 @@ public class Prices {
         this.priority = priority;
         this.price = price;
         this.curr = curr;
+        this.imagenurl = imagenurl;
+        this.urltraje = urltraje;
+        this.descripcionproducto = descripcionproducto;
+        this.producto = producto;
     }
 
     @Override
@@ -59,6 +78,7 @@ public class Prices {
                 ", priority=" + priority +
                 ", price=" + price +
                 ", curr='" + curr + '\'' +
+                ", imagenUrl='" + imagenurl + '\'' +
                 '}';
     }
 
@@ -128,5 +148,37 @@ public class Prices {
 
     public void setCurr(String curr) {
         this.curr = curr;
+    }
+
+    public String getImagenurl() {
+        return imagenurl;
+    }
+
+    public void setImagenurl(String imagenurl) {
+        this.imagenurl = imagenurl;
+    }
+
+    public String getUrltraje() {
+        return urltraje;
+    }
+
+    public void setUrltraje(String urltraje) {
+        this.urltraje = urltraje;
+    }
+
+    public String getDescripcionproducto() {
+        return descripcionproducto;
+    }
+
+    public void setDescripcionproducto(String descripcionproducto) {
+        this.descripcionproducto = descripcionproducto;
+    }
+
+    public String getProducto() {
+        return producto;
+    }
+
+    public void setProducto(String producto) {
+        this.producto = producto;
     }
 }
