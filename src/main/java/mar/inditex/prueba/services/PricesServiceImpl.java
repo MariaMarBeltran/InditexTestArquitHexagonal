@@ -20,7 +20,7 @@ import static mar.inditex.prueba.utils.UtilsPrice.*;
 @Service
 public class PricesServiceImpl implements PricesService {
     private static final Logger log = LoggerFactory.getLogger(PricesServiceImpl.class);
-    private PricesRepository pricesRepository;
+    private final PricesRepository pricesRepository;
 
     public PricesServiceImpl(PricesRepository pricesRepository) {
         this.pricesRepository = pricesRepository;
@@ -28,43 +28,23 @@ public class PricesServiceImpl implements PricesService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<Prices> getListaPreciosTodos() {
-        return pricesRepository.findTodos();
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public List<Prices> getListaPrecios() {
+    public List<Prices> getPriceList() {
         return pricesRepository.findAll();
     }
 
-
     @Override
     @Transactional(readOnly = true)
-    public Prices getPrecioById(Long id) {
+    public Prices getPriceById(Long id) {
         return pricesRepository.findById(id).orElseThrow(
                 () -> new MensajeErrorException(id)
         );
     }
 
-
     @Override
     @Transactional(readOnly = true)
-    public List<Prices> getByPriceList(Long price_list) {
-        return pricesRepository.findByPriceList(price_list);
-    }
-
-
-    public List<Prices> getProducto1(Date datePrice, Integer productId, Integer brandId) {
-        return pricesRepository.findByStarDateAndProductIdAndPriceList(datePrice, productId, brandId);
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public Prices getProducto(Date datePrice, Integer productId, Integer brandId) {
-        List<Prices> lista = pricesRepository.findByStarDateAndProductIdAndPriceList(datePrice, productId, brandId);
+    public Prices getPrice(Date datePrice, Integer productId, Integer brandId) {
+        List<Prices> lista = pricesRepository.findByProductIdAndBrandIdAndStartDateLessThanEqualAndEndDateGreaterThanEqual(productId, brandId , datePrice,datePrice);
         return getPriority(lista);
-
     }
 
 

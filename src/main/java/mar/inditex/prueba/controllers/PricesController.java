@@ -2,14 +2,11 @@ package mar.inditex.prueba.controllers;
 
 import mar.inditex.prueba.exceptions.MensajeErrorException;
 import mar.inditex.prueba.models.Prices;
-import mar.inditex.prueba.services.PricesService;
+import mar.inditex.prueba.services.PricesServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.text.DateFormat;
@@ -23,110 +20,58 @@ import java.util.List;
 public class PricesController {
     private static final Logger log =  LoggerFactory.getLogger(PricesController.class);
 
-    @Autowired
-    private PricesService pricesService;
+    private final PricesServiceImpl pricesService;
+
+    public PricesController(PricesServiceImpl pricesService) {
+        this.pricesService = pricesService;
+    }
 
     // Pruebas desde url con capa vista http://localhost:8090/
     @GetMapping("/")
-    public String listarHtml(Model model){
-        List<Prices> lista = pricesService.getListaPreciosTodos();
+    public String priceList(Model model){
+        List<Prices> lista = pricesService.getPriceList();
         model.addAttribute("pricesList", lista);
         return "list-prices";
     }
 
-    @RequestMapping("/buscaProductoHtml")
-    public String detalleHtml(
+    @RequestMapping("/priceDetail")
+    public String priceDetail(
             @RequestParam(value = "fechaProducto", required = true) String fechaProducto,
             @RequestParam(value ="productId", required = true) Long productId,
             @RequestParam(value = "brandId", required = true) Long brandId,
-            Model model){
+            Model model) throws ParseException {
         Prices prices = null;
-        String mensaje ="con los siguientes parámetros: "
-                + " productId: " +  productId.toString()
-                + " priceList: " + brandId.toString()
-                + " fechaProducto: " + fechaProducto;
-        log.info(mensaje);
+
         DateFormat dateFormat  = new SimpleDateFormat("yyyy-MM-dd HH.mm.ss");
         Date date ;
+        date = dateFormat.parse(fechaProducto);
+        prices = pricesService.getPrice(date, productId.intValue(), brandId.intValue());
+        if (prices == null){
+            String mensaje ="Parámetros: "
+                    + " productId: " +  productId.toString()
+                    + " priceList: " + brandId.toString()
+                    + " fechaProducto: " + fechaProducto;
+            throw new MensajeErrorException(mensaje);
+        } else {
+            List<Prices> lista =  new ArrayList<>();
+            lista.add(prices);
+            model.addAttribute("pricesList", lista);
+            return "list-prices";
+        }
+    }
 
-        try {
-            date = dateFormat.parse(fechaProducto);
-            prices = pricesService.getProducto(date, productId.intValue(), brandId.intValue());
+    @GetMapping("/{price_list}")
+    public String priceId(@PathVariable Long price_list, Model model){
+        String mensaje;
+        Prices prices = null;
+            prices = pricesService.getPriceById(price_list);
             if (prices == null){
-                model.addAttribute("info", "No encontrado el producto " + mensaje);
-                model.addAttribute("message", " ");
-                return "ErrorPrices";
+                throw new MensajeErrorException(price_list);
             } else {
                 List<Prices> lista =  new ArrayList<>();
                 lista.add(prices);
                 model.addAttribute("pricesList", lista);
                 return "list-prices";
             }
-        } catch ( MensajeErrorException m  ){
-            model.addAttribute("info", "No encontrado el producto " + mensaje);
-            model.addAttribute("message", m.getMessage());
-            return "ErrorPrices";
-        }  catch (ParseException e) {
-            model.addAttribute("info", "Formato de fecha incorrecta. (yyyy-MM-dd HH.mm.ss) " + fechaProducto);
-            model.addAttribute("message", e.getMessage());
-            return "ErrorPrices";
-        }
-
     }
-
-    // Pruebas realizadas desde Postman
-    @GetMapping("/listar")
-    public ResponseEntity<List<Prices>> listar(){
-        List<Prices> prices = pricesService.getListaPrecios();
-        return new ResponseEntity <List<Prices>>(prices,HttpStatus.OK);
-    }
-
-    @GetMapping("/{price_list}")
-    public ResponseEntity<Prices>  detalle(@PathVariable Long price_list){
-        String mensaje;
-        Prices prices = null;
-        try {
-            prices = pricesService.getPrecioById(price_list);
-        } catch ( MensajeErrorException m  ){
-            log.info("No encontrado el producto " + price_list.toString());
-        }
-        return new ResponseEntity <>(prices ,HttpStatus.OK);
-    }
-
-    @GetMapping("buscaId/{price_list_id}")
-    public ResponseEntity<List<Prices>>  buscaIdentificadoTarifa2(@PathVariable("price_list_id") Long price_list_id){
-        List<Prices> prices = pricesService.getByPriceList(price_list_id);
-        if (prices.isEmpty()){
-            log.info("No encontrado el producto " + price_list_id.toString());
-        }
-        return new ResponseEntity <List<Prices>>(prices ,HttpStatus.OK);
-    }
-
-
-    @GetMapping("buscaProducto/{productId}/{brandId}/{fechaProducto}")
-    public ResponseEntity<Prices>  buscaProducto(
-            @PathVariable("productId") Integer productId,
-            @PathVariable("brandId") Integer brandId,
-            @PathVariable("fechaProducto") String fechaProducto) {
-        String mensaje ="No encontrado el producto con los siguientes parámetros: "
-                        + " productId: " +  productId.toString()
-                        + " priceList: " + brandId.toString()
-                        + " fechaProducto: " + fechaProducto;
-
-        DateFormat dateFormat  = new SimpleDateFormat("yyyy-MM-dd HH.mm.ss");
-        Date date ;
-        try {
-            date = dateFormat.parse(fechaProducto);
-            Prices prices = pricesService.getProducto(date, productId, brandId);
-            if (prices == null){
-                log.info(mensaje);
-            }
-            return new ResponseEntity <>(prices ,HttpStatus.OK);
-        } catch (ParseException e) {
-            log.info("Formato de fecha incorrecta. (yyyy-MM-dd HH.mm.ss)");
-            return null;
-        }
-
-    }
-
 }

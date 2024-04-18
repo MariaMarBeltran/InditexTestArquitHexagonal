@@ -23,7 +23,6 @@ import static mar.inditex.prueba.utils.UtilsPrice.getPriority;
 import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
-@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class PricesControllerTest {
     public static final String YYYY_MM_DD_HH_MM_SS = "yyyy-MM-dd HH.mm.ss";
     private final DateFormat dateFormat  = new SimpleDateFormat(YYYY_MM_DD_HH_MM_SS);
@@ -33,7 +32,6 @@ class PricesControllerTest {
     private PricesRepository pricesRepository;
 
     @Test
-    @Order(1)
     void testListaPrecios() {
         log.info("Inicio: testListaPrecios");
         List<Prices> lista = pricesRepository.findAll();
@@ -43,13 +41,12 @@ class PricesControllerTest {
     }
 
     @Test
-    @Order(2)
     void testPrecioById() {
         log.info("Inicio: testPrecioById");
         Optional<Prices> prices = pricesRepository.findById(3L);
         assertTrue(prices.isPresent());
         assertNotNull(prices);
-        assertEquals(prices.get().getCurr(),"EUR");
+        assertEquals("EUR",prices.get().getCurr());
 
         prices = pricesRepository.findById(14L);
         assertFalse(prices.isPresent());
@@ -57,30 +54,28 @@ class PricesControllerTest {
     }
 
     @Test
-    @Order(3)
     void testPriceList() {
         log.info("Inicio: testPriceList");
         List<Prices> lista = pricesRepository.findByPriceList(2L);
         assertFalse(lista.isEmpty());
-        assertEquals(lista.get(0).getCurr(),"EUR");
+        assertEquals("EUR", lista.get(0).getCurr());
         log.info("Fin: testPriceList");
     }
 
 
     //Test 1: petición a las 10:00 del día 14 del producto 35455   para la brand 1 (ZARA)
     @Test
-    @Order(4)
     void test1GetProducto() {
         log.info("Inicio: test1GetProducto");
         try {
             Date datePrice = dateFormat.parse("2020-06-14 10.00.00");
             Integer productId = 35455;
             Integer brandId = 1;
-            List<Prices> lista = pricesRepository.findByStarDateAndProductIdAndPriceList(datePrice, productId, brandId);
+            List<Prices> lista = pricesRepository.findByProductIdAndBrandIdAndStartDateLessThanEqualAndEndDateGreaterThanEqual(productId, brandId , datePrice,datePrice);
             assertFalse(lista.isEmpty());
             Prices price = getPriority(lista);
             assertNotNull(price);
-            assertEquals(price.getCurr(),"EUR");
+            assertEquals("EUR", price.getCurr());
             assertTrue(price.getPrice().toString().contains("35.50"));
         } catch (ParseException e) {
             throw new RuntimeException(e);
@@ -90,18 +85,17 @@ class PricesControllerTest {
 
     //Test 2: petición a las 16:00 del día 14 del producto 35455   para la brand 1 (ZARA)
     @Test
-    @Order(5)
     void test2GetProducto() {
         log.info("Inicio: test2GetProducto");
         try {
             Date datePrice = dateFormat.parse("2020-06-14 16.00.00");
             Integer productId = 35455;
             Integer brandId = 1;
-            List<Prices> lista = pricesRepository.findByStarDateAndProductIdAndPriceList(datePrice, productId, brandId);
+            List<Prices> lista = pricesRepository.findByProductIdAndBrandIdAndStartDateLessThanEqualAndEndDateGreaterThanEqual(productId, brandId , datePrice,datePrice);
             assertFalse(lista.isEmpty());
             Prices price = getPriority(lista);
             assertNotNull(price);
-            assertEquals(price.getCurr(),"EUR");
+            assertEquals("EUR", price.getCurr());
             assertTrue(price.getPrice().toString().contains("25.45"));
         } catch (ParseException e) {
             throw new RuntimeException(e);
@@ -111,18 +105,17 @@ class PricesControllerTest {
 
     //Test 3: petición a las 21:00 del día 14 del producto 35455   para la brand 1 (ZARA)
     @Test
-    @Order(6)
     void test3GetProducto() {
         log.info("Inicio: test3GetProducto");
         try {
             Date datePrice = dateFormat.parse("2020-06-14 21.00.00");
             Integer productId = 35455;
             Integer brandId = 1;
-            List<Prices> lista = pricesRepository.findByStarDateAndProductIdAndPriceList(datePrice, productId, brandId);
+            List<Prices> lista = pricesRepository.findByProductIdAndBrandIdAndStartDateLessThanEqualAndEndDateGreaterThanEqual(productId, brandId , datePrice,datePrice);
             assertFalse(lista.isEmpty());
             Prices price = getPriority(lista);
             assertNotNull(price);
-            assertEquals(price.getCurr(),"EUR");
+            assertEquals("EUR", price.getCurr());
             assertTrue(price.getPrice().toString().contains("35.50"));
         } catch (ParseException e) {
             throw new RuntimeException(e);
@@ -132,38 +125,37 @@ class PricesControllerTest {
 
     //Test 4: petición a las 10:00 del día 15 del producto 35455   para la brand 1 (ZARA)
     @Test
-    @Order(7)
     void test4GetProducto() {
         log.info("Inicio: test4GetProducto");
         try {
             Date datePrice = dateFormat.parse("2020-06-15 10.00.00");
             Integer productId = 35455;
             Integer brandId = 1;
-            List<Prices> lista = pricesRepository.findByStarDateAndProductIdAndPriceList(datePrice, productId, brandId);
+            List<Prices> lista = pricesRepository.findByProductIdAndBrandIdAndStartDateLessThanEqualAndEndDateGreaterThanEqual(productId, brandId , datePrice,datePrice);
             assertFalse(lista.isEmpty());
             Prices price = getPriority(lista);
             assertNotNull(price);
-            assertEquals(price.getCurr(),"EUR");;
+            assertEquals("EUR", price.getCurr());
             assertTrue(price.getPrice().toString().contains("30.50"));
         } catch (ParseException e) {
             throw new RuntimeException(e);
         }
         log.info("Fin: test4GetProducto");
     }
+
     //Test 5: petición a las 21:00 del día 16 del producto 35455   para la brand 1 (ZARA)
     @Test
-    @Order(8)
     void test5GetProducto() {
         log.info("Inicio: test5GetProducto");
         try {
             Date datePrice = dateFormat.parse("2020-06-16 21.00.00");
             Integer productId = 35455;
             Integer brandId = 1;
-            List<Prices> lista = pricesRepository.findByStarDateAndProductIdAndPriceList(datePrice, productId, brandId);
+            List<Prices> lista = pricesRepository.findByProductIdAndBrandIdAndStartDateLessThanEqualAndEndDateGreaterThanEqual(productId, brandId , datePrice,datePrice);
             assertFalse(lista.isEmpty());
             Prices price = getPriority(lista);
             assertNotNull(price);
-            assertEquals(price.getCurr(),"EUR");;
+            assertEquals("EUR", price.getCurr());
             assertTrue(price.getPrice().toString().contains("38.95"));
         } catch (ParseException e) {
             throw new RuntimeException(e);

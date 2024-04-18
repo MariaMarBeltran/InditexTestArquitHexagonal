@@ -7,14 +7,10 @@ import java.util.List;
 
 public interface PricesService {
 
-    List<Prices> getListaPreciosTodos();
+    List<Prices> getPriceList();
 
-    List<Prices> getListaPrecios();
+    Prices getPriceById(Long id);
 
-    Prices getPrecioById(Long id);
-
-    List<Prices> getByPriceList(Long price_list);
-
-    Prices getProducto(Date datePrice, Integer productId, Integer brandId );
+    Prices getPrice(Date datePrice, Integer productId, Integer brandId );
 
 }
