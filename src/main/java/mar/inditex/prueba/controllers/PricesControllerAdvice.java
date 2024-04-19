@@ -41,6 +41,7 @@ public class PricesControllerAdvice {
     @ExceptionHandler({Exception.class, RuntimeException.class})
     public String runtimePricesException(Throwable e, Model model){
         model.addAttribute("info", "Ha ocurrido un error contacte con el administrador");
+        model.addAttribute("message",e.getMessage());
         log.error(e.getMessage());
         return "ErrorPrices";
     }

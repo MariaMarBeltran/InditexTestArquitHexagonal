@@ -5,6 +5,8 @@ import mar.inditex.prueba.models.Prices;
 import mar.inditex.prueba.services.PricesServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -73,5 +75,28 @@ public class PricesController {
                 model.addAttribute("pricesList", lista);
                 return "list-prices";
             }
+    }
+
+    // Pruebas con formato Json para Postman
+    @RequestMapping("/priceDetailJson")
+    public ResponseEntity<Prices>  priceDetailJson(
+            @RequestParam(value = "fechaProducto", required = true) String fechaProducto,
+            @RequestParam(value ="productId", required = true) Long productId,
+            @RequestParam(value = "brandId", required = true) Long brandId
+            ) throws ParseException {
+        Prices prices = null;
+
+        DateFormat dateFormat  = new SimpleDateFormat("yyyy-MM-dd HH.mm.ss");
+        Date date ;
+        date = dateFormat.parse(fechaProducto);
+        prices = pricesService.getPrice(date, productId.intValue(), brandId.intValue());
+        return new ResponseEntity <>(prices , HttpStatus.OK);
+    }
+
+
+    @GetMapping("/priceIdJson/{price_list}")
+    public ResponseEntity<Prices> priceIdJson(@PathVariable Long price_list){
+        Prices prices = pricesService.getPriceById(price_list);
+        return new ResponseEntity <>(prices , HttpStatus.OK);
     }
 }
