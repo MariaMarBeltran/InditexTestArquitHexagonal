@@ -8,7 +8,8 @@ import java.util.Date;
 import java.util.List;
 
 @Repository
-public interface PricesRepository extends JpaRepository<Prices, Long> {
+public interface PricesRepository extends JpaRepository<Prices, Long>  {
+
     List<Prices> findByProductIdAndBrandIdAndStartDateLessThanEqualAndEndDateGreaterThanEqual(
             Integer productId, Integer brandId, Date datePriceToStrart, Date datePriceToEnd);
 

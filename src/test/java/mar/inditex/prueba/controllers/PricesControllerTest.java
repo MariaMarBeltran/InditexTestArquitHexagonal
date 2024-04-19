@@ -6,8 +6,6 @@ import mar.inditex.prueba.repositories.PricesRepository;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -23,7 +21,6 @@ import static org.junit.jupiter.api.Assertions.*;
 class PricesControllerTest {
     public static final String YYYY_MM_DD_HH_MM_SS = "yyyy-MM-dd HH.mm.ss";
     private final DateFormat dateFormat  = new SimpleDateFormat(YYYY_MM_DD_HH_MM_SS);
-    private Logger log = LoggerFactory.getLogger(PricesControllerTest.class);
 
     @Autowired
     private PricesRepository pricesRepository;

@@ -19,7 +19,6 @@ import static mar.inditex.prueba.utils.UtilsPrice.*;
 
 @Service
 public class PricesServiceImpl implements PricesService {
-    private static final Logger log = LoggerFactory.getLogger(PricesServiceImpl.class);
     private final PricesRepository pricesRepository;
 
     public PricesServiceImpl(PricesRepository pricesRepository) {
@@ -43,7 +42,7 @@ public class PricesServiceImpl implements PricesService {
     @Override
     @Transactional(readOnly = true)
     public Prices getPrice(Date datePrice, Integer productId, Integer brandId) {
-        List<Prices> lista = pricesRepository.findByProductIdAndBrandIdAndStartDateLessThanEqualAndEndDateGreaterThanEqual(productId, brandId , datePrice,datePrice);
+        List<Prices> lista = pricesRepository.findByProductIdAndBrandIdAndStartDateLessThanEqualAndEndDateGreaterThanEqual(productId, brandId , datePrice, datePrice);
         return getPriority(lista);
     }
 
