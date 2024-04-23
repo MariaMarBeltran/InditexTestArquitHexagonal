@@ -1,8 +1,9 @@
-package mar.inditex.prueba.controllers;
+package mar.inditex.prueba.adapter.in.web;
 
-import mar.inditex.prueba.exceptions.MensajeErrorException;
-import mar.inditex.prueba.models.Prices;
-import mar.inditex.prueba.services.PricesServiceImpl;
+import mar.inditex.prueba.domain.MensajeErrorException;
+import mar.inditex.prueba.adapter.out.db.models.Prices;
+import mar.inditex.prueba.port.in.web.PricesController;
+import mar.inditex.prueba.application.PricesServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -19,12 +20,12 @@ import java.util.Date;
 import java.util.List;
 
 @Controller
-public class PricesController {
-    private static final Logger log =  LoggerFactory.getLogger(PricesController.class);
+public class PricesControllerImpl implements PricesController {
+    private static final Logger log =  LoggerFactory.getLogger(PricesControllerImpl.class);
 
     private final PricesServiceImpl pricesService;
 
-    public PricesController(PricesServiceImpl pricesService) {
+    public PricesControllerImpl(PricesServiceImpl pricesService) {
         this.pricesService = pricesService;
     }
 
@@ -41,7 +42,7 @@ public class PricesController {
             @RequestParam(value = "fechaProducto", required = true) String fechaProducto,
             @RequestParam(value ="productId", required = true) Long productId,
             @RequestParam(value = "brandId", required = true) Long brandId,
-            Model model) throws ParseException {
+            Model model)throws ParseException  {
         Prices prices = null;
 
         DateFormat dateFormat  = new SimpleDateFormat("yyyy-MM-dd HH.mm.ss");

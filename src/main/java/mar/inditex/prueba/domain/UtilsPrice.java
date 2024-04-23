@@ -1,6 +1,6 @@
-package mar.inditex.prueba.utils;
+package mar.inditex.prueba.domain;
 
-import mar.inditex.prueba.models.Prices;
+import mar.inditex.prueba.adapter.out.db.models.Prices;
 
 import java.util.Comparator;
 import java.util.List;

@@ -1,6 +1,6 @@
-package mar.inditex.prueba.ejemplos;
+package mar.inditex.prueba.domain;
 
-import mar.inditex.prueba.models.Prices;
+import mar.inditex.prueba.adapter.out.db.models.Prices;
 
 import java.math.BigDecimal;
 import java.text.DateFormat;

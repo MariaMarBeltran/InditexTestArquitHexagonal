@@ -1,9 +1,9 @@
 package mar.inditex.prueba.controllers;
 
-import mar.inditex.prueba.ejemplos.DatosPruebas;
-import mar.inditex.prueba.models.Prices;
-import mar.inditex.prueba.repositories.PricesRepository;
-import mar.inditex.prueba.services.PricesServiceImpl;
+import mar.inditex.prueba.domain.DatosPruebas;
+import mar.inditex.prueba.adapter.out.db.models.Prices;
+import mar.inditex.prueba.adapter.out.db.repository.PricesRepositoryImpl;
+import mar.inditex.prueba.application.PricesServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -23,9 +23,9 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-public class PricesControllerMockTest {
+public class PricesControllerImplMockTest {
     @Mock
-    private PricesRepository pricesRepository;
+    private PricesRepositoryImpl pricesRepositoryImpl;
     @InjectMocks
     private  PricesServiceImpl pricesService;
 
@@ -35,7 +35,7 @@ public class PricesControllerMockTest {
     @Test
     void testListaPrecios() throws ParseException {
         List<Prices> listaEsperada = DatosPruebas.getPriceList();
-        when(pricesRepository.findAll()).thenReturn(listaEsperada);
+        when(pricesRepositoryImpl.findAll()).thenReturn(listaEsperada);
 
         List<Prices> listaResultado = pricesService.getPriceList();
         assertEquals(listaEsperada.size(),listaResultado.size());
@@ -45,11 +45,11 @@ public class PricesControllerMockTest {
     @Test
     void testPrecioById() throws ParseException  {
         Prices priceEsperado = DatosPruebas.getPrice3();
-        when(pricesRepository.findById(3L)).thenReturn(Optional.of(priceEsperado));
+        when(pricesRepositoryImpl.findById(3L)).thenReturn(Optional.of(priceEsperado));
 
         Prices priceResultado = pricesService.getPriceById(3L);
         assertEquals(priceEsperado.getStartDate(), priceResultado.getStartDate());
-        verify(pricesRepository, Mockito.times(1)).findById(3L);
+        verify(pricesRepositoryImpl, Mockito.times(1)).findById(3L);
     }
 
     //Test 1: petición a las 10:00 del día 14 del producto 35455   para la brand 1 (ZARA)
@@ -60,12 +60,12 @@ public class PricesControllerMockTest {
         Integer brandId = 1;
         List<Prices> listaEsperada = new ArrayList<>();
         listaEsperada.add(DatosPruebas.getPrice1());
-        when(pricesRepository
+        when(pricesRepositoryImpl
                 .findByProductIdAndBrandIdAndStartDateLessThanEqualAndEndDateGreaterThanEqual(productId, brandId , datePrice, datePrice))
                 .thenReturn(listaEsperada);
 
         Prices priceResultado = pricesService.getPrice(datePrice,productId,brandId);
-        verify(pricesRepository, Mockito.times(1)).findByProductIdAndBrandIdAndStartDateLessThanEqualAndEndDateGreaterThanEqual(productId, brandId , datePrice, datePrice);
+        verify(pricesRepositoryImpl, Mockito.times(1)).findByProductIdAndBrandIdAndStartDateLessThanEqualAndEndDateGreaterThanEqual(productId, brandId , datePrice, datePrice);
 
         assertNotNull(priceResultado);
         assertEquals("EUR", priceResultado.getCurr());
@@ -80,12 +80,12 @@ public class PricesControllerMockTest {
         Integer brandId = 1;
         List<Prices> listaEsperada = new ArrayList<>();
         listaEsperada.add(DatosPruebas.getPrice2());
-        when(pricesRepository
+        when(pricesRepositoryImpl
                 .findByProductIdAndBrandIdAndStartDateLessThanEqualAndEndDateGreaterThanEqual(productId, brandId , datePrice, datePrice))
                 .thenReturn(listaEsperada);
 
         Prices priceResultado = pricesService.getPrice(datePrice,productId,brandId);
-        verify(pricesRepository, Mockito.times(1)).findByProductIdAndBrandIdAndStartDateLessThanEqualAndEndDateGreaterThanEqual(productId, brandId , datePrice, datePrice);
+        verify(pricesRepositoryImpl, Mockito.times(1)).findByProductIdAndBrandIdAndStartDateLessThanEqualAndEndDateGreaterThanEqual(productId, brandId , datePrice, datePrice);
 
         assertNotNull(priceResultado);
         assertEquals("EUR", priceResultado.getCurr());
@@ -100,12 +100,12 @@ public class PricesControllerMockTest {
         Integer brandId = 1;
         List<Prices> listaEsperada = new ArrayList<>();
         listaEsperada.add(DatosPruebas.getPrice1());
-        when(pricesRepository
+        when(pricesRepositoryImpl
                 .findByProductIdAndBrandIdAndStartDateLessThanEqualAndEndDateGreaterThanEqual(productId, brandId , datePrice, datePrice))
                 .thenReturn(listaEsperada);
 
         Prices priceResultado = pricesService.getPrice(datePrice,productId,brandId);
-        verify(pricesRepository, Mockito.times(1)).findByProductIdAndBrandIdAndStartDateLessThanEqualAndEndDateGreaterThanEqual(productId, brandId , datePrice, datePrice);
+        verify(pricesRepositoryImpl, Mockito.times(1)).findByProductIdAndBrandIdAndStartDateLessThanEqualAndEndDateGreaterThanEqual(productId, brandId , datePrice, datePrice);
 
         assertNotNull(priceResultado);
         assertEquals("EUR", priceResultado.getCurr());
@@ -120,12 +120,12 @@ public class PricesControllerMockTest {
         Integer brandId = 1;
         List<Prices> listaEsperada = new ArrayList<>();
         listaEsperada.add(DatosPruebas.getPrice3());
-        when(pricesRepository
+        when(pricesRepositoryImpl
                 .findByProductIdAndBrandIdAndStartDateLessThanEqualAndEndDateGreaterThanEqual(productId, brandId , datePrice, datePrice))
                 .thenReturn(listaEsperada);
 
         Prices priceResultado = pricesService.getPrice(datePrice,productId,brandId);
-        verify(pricesRepository, Mockito.times(1)).findByProductIdAndBrandIdAndStartDateLessThanEqualAndEndDateGreaterThanEqual(productId, brandId , datePrice, datePrice);
+        verify(pricesRepositoryImpl, Mockito.times(1)).findByProductIdAndBrandIdAndStartDateLessThanEqualAndEndDateGreaterThanEqual(productId, brandId , datePrice, datePrice);
 
         assertNotNull(priceResultado);
         assertEquals("EUR", priceResultado.getCurr());
@@ -140,12 +140,12 @@ public class PricesControllerMockTest {
         Integer brandId = 1;
         List<Prices> listaEsperada = new ArrayList<>();
         listaEsperada.add(DatosPruebas.getPrice4());
-        when(pricesRepository
+        when(pricesRepositoryImpl
                 .findByProductIdAndBrandIdAndStartDateLessThanEqualAndEndDateGreaterThanEqual(productId, brandId , datePrice, datePrice))
                 .thenReturn(listaEsperada);
 
         Prices priceResultado = pricesService.getPrice(datePrice,productId,brandId);
-        verify(pricesRepository, Mockito.times(1)).findByProductIdAndBrandIdAndStartDateLessThanEqualAndEndDateGreaterThanEqual(productId, brandId , datePrice, datePrice);
+        verify(pricesRepositoryImpl, Mockito.times(1)).findByProductIdAndBrandIdAndStartDateLessThanEqualAndEndDateGreaterThanEqual(productId, brandId , datePrice, datePrice);
 
         assertNotNull(priceResultado);
         assertEquals("EUR", priceResultado.getCurr());

@@ -1,6 +1,6 @@
-package mar.inditex.prueba.services;
+package mar.inditex.prueba.application;
 
-import mar.inditex.prueba.models.Prices;
+import mar.inditex.prueba.adapter.out.db.models.Prices;
 
 import java.util.Date;
 import java.util.List;

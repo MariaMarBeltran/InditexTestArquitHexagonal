@@ -1,7 +1,7 @@
 package mar.inditex.prueba.controllers;
 
-import mar.inditex.prueba.models.Prices;
-import mar.inditex.prueba.repositories.PricesRepository;
+import mar.inditex.prueba.adapter.out.db.models.Prices;
+import mar.inditex.prueba.adapter.out.db.repository.PricesRepositoryImpl;
 
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,38 +14,38 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
-import static mar.inditex.prueba.utils.UtilsPrice.getPriority;
+import static mar.inditex.prueba.domain.UtilsPrice.getPriority;
 import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
-class PricesControllerTest {
+class PricesControllerPricesRepositoryImplTest {
     public static final String YYYY_MM_DD_HH_MM_SS = "yyyy-MM-dd HH.mm.ss";
     private final DateFormat dateFormat  = new SimpleDateFormat(YYYY_MM_DD_HH_MM_SS);
 
     @Autowired
-    private PricesRepository pricesRepository;
+    private PricesRepositoryImpl pricesRepositoryImpl;
 
     @Test
     void testListaPrecios() {
-        List<Prices> lista = pricesRepository.findAll();
+        List<Prices> lista = pricesRepositoryImpl.findAll();
         assertFalse(lista.isEmpty());
         assertEquals(4, lista.size());
     }
 
     @Test
     void testPrecioById() {
-        Optional<Prices> prices = pricesRepository.findById(3L);
+        Optional<Prices> prices = pricesRepositoryImpl.findById(3L);
         assertTrue(prices.isPresent());
         assertNotNull(prices);
         assertEquals("EUR",prices.get().getCurr());
 
-        prices = pricesRepository.findById(14L);
+        prices = pricesRepositoryImpl.findById(14L);
         assertFalse(prices.isPresent());
     }
 
     @Test
     void testPriceList() {
-        List<Prices> lista = pricesRepository.findByPriceList(2L);
+        List<Prices> lista = pricesRepositoryImpl.findByPriceList(2L);
         assertFalse(lista.isEmpty());
         assertEquals("EUR", lista.get(0).getCurr());
     }
@@ -57,7 +57,7 @@ class PricesControllerTest {
         Date datePrice = dateFormat.parse("2020-06-14 10.00.00");
         Integer productId = 35455;
         Integer brandId = 1;
-        List<Prices> lista = pricesRepository.findByProductIdAndBrandIdAndStartDateLessThanEqualAndEndDateGreaterThanEqual(productId, brandId , datePrice,datePrice);
+        List<Prices> lista = pricesRepositoryImpl.findByProductIdAndBrandIdAndStartDateLessThanEqualAndEndDateGreaterThanEqual(productId, brandId , datePrice,datePrice);
         assertFalse(lista.isEmpty());
         Prices price = getPriority(lista);
         assertNotNull(price);
@@ -71,7 +71,7 @@ class PricesControllerTest {
         Date datePrice = dateFormat.parse("2020-06-14 16.00.00");
         Integer productId = 35455;
         Integer brandId = 1;
-        List<Prices> lista = pricesRepository.findByProductIdAndBrandIdAndStartDateLessThanEqualAndEndDateGreaterThanEqual(productId, brandId , datePrice,datePrice);
+        List<Prices> lista = pricesRepositoryImpl.findByProductIdAndBrandIdAndStartDateLessThanEqualAndEndDateGreaterThanEqual(productId, brandId , datePrice,datePrice);
         assertFalse(lista.isEmpty());
         Prices price = getPriority(lista);
         assertNotNull(price);
@@ -85,7 +85,7 @@ class PricesControllerTest {
         Date datePrice = dateFormat.parse("2020-06-14 21.00.00");
         Integer productId = 35455;
         Integer brandId = 1;
-        List<Prices> lista = pricesRepository.findByProductIdAndBrandIdAndStartDateLessThanEqualAndEndDateGreaterThanEqual(productId, brandId , datePrice,datePrice);
+        List<Prices> lista = pricesRepositoryImpl.findByProductIdAndBrandIdAndStartDateLessThanEqualAndEndDateGreaterThanEqual(productId, brandId , datePrice,datePrice);
         assertFalse(lista.isEmpty());
         Prices price = getPriority(lista);
         assertNotNull(price);
@@ -99,7 +99,7 @@ class PricesControllerTest {
         Date datePrice = dateFormat.parse("2020-06-15 10.00.00");
         Integer productId = 35455;
         Integer brandId = 1;
-        List<Prices> lista = pricesRepository.findByProductIdAndBrandIdAndStartDateLessThanEqualAndEndDateGreaterThanEqual(productId, brandId , datePrice,datePrice);
+        List<Prices> lista = pricesRepositoryImpl.findByProductIdAndBrandIdAndStartDateLessThanEqualAndEndDateGreaterThanEqual(productId, brandId , datePrice,datePrice);
         assertFalse(lista.isEmpty());
         Prices price = getPriority(lista);
         assertNotNull(price);
@@ -113,7 +113,7 @@ class PricesControllerTest {
         Date datePrice = dateFormat.parse("2020-06-16 21.00.00");
         Integer productId = 35455;
         Integer brandId = 1;
-        List<Prices> lista = pricesRepository.findByProductIdAndBrandIdAndStartDateLessThanEqualAndEndDateGreaterThanEqual(productId, brandId , datePrice,datePrice);
+        List<Prices> lista = pricesRepositoryImpl.findByProductIdAndBrandIdAndStartDateLessThanEqualAndEndDateGreaterThanEqual(productId, brandId , datePrice,datePrice);
         assertFalse(lista.isEmpty());
         Prices price = getPriority(lista);
         assertNotNull(price);

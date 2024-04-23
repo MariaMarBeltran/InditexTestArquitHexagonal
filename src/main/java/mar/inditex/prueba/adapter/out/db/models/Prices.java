@@ -1,4 +1,4 @@
-package mar.inditex.prueba.models;
+package mar.inditex.prueba.adapter.out.db.models;
 
 import jakarta.persistence.*;
 

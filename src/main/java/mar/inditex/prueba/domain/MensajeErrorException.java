@@ -1,4 +1,4 @@
-package mar.inditex.prueba.exceptions;
+package mar.inditex.prueba.domain;
 
 public class MensajeErrorException extends RuntimeException{
     public MensajeErrorException(String message) {
